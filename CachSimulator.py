@@ -1,15 +1,14 @@
 import random
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, scrolledtext
 import threading
 import time
-
 
 class CacheBlock:
     def __init__(self, tag=None, valid=False, last_used=0):
         self.tag = tag
         self.valid = valid
-        self.last_used = last_used  # For LRU tracking
+        self.last_used = last_used
 
 class CacheSet:
     def __init__(self, associativity):
@@ -38,7 +37,6 @@ class CacheSet:
         victim.tag = tag
         victim.valid = True
         victim.last_used = access_counter
-
 
 class CacheSimulator:
     def __init__(self, cache_size, block_size, associativity, replacement_policy):
@@ -91,25 +89,25 @@ class CacheGUI:
         self.simulator = simulator
         self.root = root
         self.root.title("Cache Simulator")
+        self.root.geometry("400x450")
         
-        self.label = tk.Label(root, text="Enter Memory Address:")
-        self.label.pack()
+        self.main_frame = ttk.Frame(root, padding=10)
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
 
-        self.entry = tk.Entry(root)
-        self.entry.pack()
+        ttk.Label(self.main_frame, text="Enter Memory Address:").pack()
+        self.entry = ttk.Entry(self.main_frame)
+        self.entry.pack(pady=5)
 
-        self.button = tk.Button(root, text="Access Cache", command=self.access_cache)
-        self.button.pack()
-
-        self.output = tk.Text(root, height=10, width=50)
-        self.output.pack()
-
-        self.stats_button = tk.Button(root, text="Show Statistics", command=self.show_stats)
-        self.stats_button.pack()
+        ttk.Button(self.main_frame, text="Access Cache", command=self.access_cache).pack(pady=5)
         
-        self.auto_button = tk.Button(root, text="Start Auto Mode", command=self.start_auto_mode)
-        self.auto_button.pack()
-        
+        self.output = scrolledtext.ScrolledText(self.main_frame, height=10, width=50)
+        self.output.pack(pady=5)
+
+        ttk.Button(self.main_frame, text="Show Statistics", command=self.show_stats).pack(pady=5)
+
+        self.auto_button = ttk.Button(self.main_frame, text="Start Auto Mode", command=self.start_auto_mode)
+        self.auto_button.pack(pady=5)
+
         self.auto_running = False
 
     def access_cache(self):
@@ -138,10 +136,10 @@ class CacheGUI:
     
     def run_auto_mode(self):
         while self.auto_running:
-            address = random.randint(0, 100)  # Generate random memory address
+            address = random.randint(0, 100)  
             result = self.simulator.access_cache(address)
             self.output.insert(tk.END, f"{result}\n")
-            time.sleep(1)  # Wait 1 second between accesses
+            time.sleep(1)
 
 if __name__ == "__main__":
     cache_size = 32

@@ -4,14 +4,13 @@ from tkinter import ttk
 import threading
 import time
 
-# Developer 1: Cache Block and Data Structures
+
 class CacheBlock:
     def __init__(self, tag=None, valid=False, last_used=0):
         self.tag = tag
         self.valid = valid
         self.last_used = last_used  # For LRU tracking
 
-# Developer 2: Cache Set and Replacement Policy Management
 class CacheSet:
     def __init__(self, associativity):
         self.blocks = [CacheBlock() for _ in range(associativity)]
@@ -32,15 +31,15 @@ class CacheSet:
         if replacement_policy == "LRU":
             victim = min(self.blocks, key=lambda block: block.last_used)
         elif replacement_policy == "FIFO":
-            victim = self.blocks[0]  # FIFO removes the first block in the set
-        else:  # Random replacement
+            victim = self.blocks[0]  
+        else:  
             victim = random.choice(self.blocks)
         
         victim.tag = tag
         victim.valid = True
         victim.last_used = access_counter
 
-# Developer 3: Cache Simulation, Access Logic, and GUI
+
 class CacheSimulator:
     def __init__(self, cache_size, block_size, associativity, replacement_policy):
         self.cache_size = cache_size
@@ -51,7 +50,7 @@ class CacheSimulator:
         self.cache = [CacheSet(associativity) for _ in range(self.num_sets)]
         self.hits = 0
         self.misses = 0
-        self.access_counter = 0  # For tracking LRU
+        self.access_counter = 0  
 
     def access_cache(self, address):
         self.access_counter += 1
@@ -87,7 +86,6 @@ class CacheSimulator:
             "Miss Rate": f"{miss_rate:.2f}%"
         }
 
-# GUI Implementation with Auto Mode
 class CacheGUI:
     def __init__(self, root, simulator):
         self.simulator = simulator

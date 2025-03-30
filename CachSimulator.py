@@ -103,7 +103,7 @@ class CacheGUI:
         self.simulator = simulator
         self.root = root
         self.root.title("Cache Simulator")
-        self.root.geometry("500x650")
+        self.root.geometry("680x810")
         
         # ตั้งค่าฉากหลังและสีของ GUI
         self.root.config(bg="#f4f4f9")
